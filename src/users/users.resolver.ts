@@ -14,12 +14,10 @@ import { resolve } from 'path';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @Resolver(() => User)
-@ApiTags('users')
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Mutation(() => User)
-  @ApiCreatedResponse({ type: User, description: 'you can post a user' })
   async createUser(
     @Args('createUserInput') createUserInput: CreateUserInput,
   ): Promise<User> {
@@ -43,13 +41,11 @@ export class UsersResolver {
     return this.usersService.getOne(id);
   }
 
-  @ApiTags()
   @Mutation(() => User, { name: 'updateUser' })
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.usersService.updateUser(updateUserInput.id, updateUserInput);
   }
 
-  @ApiOkResponse({ type: User, description: 'You can delete one user' })
   @Mutation(() => User, { name: 'userdelete' })
   removeUser(@Args('id', { type: () => Int }) id: number) {
     return this.usersService.remove(id);
